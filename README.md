@@ -37,3 +37,6 @@ Simple Inventory Web page using Django + MySQL + HTML/CSS + Javascript
   ```python manage.py runserver```
   
   
+ ![image](https://user-images.githubusercontent.com/67494587/214997927-805c4bf5-e8fb-4e51-b40c-e81a4bd0413d.png)
+
+  
