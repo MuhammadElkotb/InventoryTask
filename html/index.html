@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Inventory</title>
+</head>
+
+<body>
+    <div class="headerdiv">
+        <h1 style="font-size: 50px; text-align: center;"> Inventory </h1>
+        <button id="refreshbtn" onclick="getItems()"><i class="fa fa-refresh"></i></button>
+        <textarea  id="searchbar"></textarea>
+        <div  id="searchform">
+            <label style="color: white; font-weight: bold;" for="namesearch">Name</label>
+            <input type="radio" id="namesearch" style="color:white" name="search"> <br> <br>
+            <label style="color: white; font-weight: bold;" for="descsearch">Description</label>
+            <input type="radio"  id="descsearch" style="color:white;" name="search">
+        </div>
+        <button type="button" id="searchbtn" onclick="searchItems()"> <i style="font-size: 22px;" class="fa fa-search"></i></button>   
+    </div>
+
+    <div  class="itemlistdiv">
+        <ul  class="itemlist" id="itemlist" style="list-style: none;">
+            
+        </ul>
+    </div>
+
+        <div class="newitemdiv">
+            <h1 style="color: white; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; position: relative; margin: auto;  top: 15px; font-size: 35px; text-align: center;">New item</h1>
+            <form class="newitemform">
+                <label for="itemnameinput" style="color:white; left:10%; top:18%; position: absolute; font-size: 18px;">Name</label>
+                <input placeholder="Name" type="text" required id="itemnameinput" name="itemname">
+                <label for="itempricinpute" style="color:white; left:10%; top:29%; position: absolute; font-size: 18px;">Price</label>
+                <input placeholder="Price" type="number" required min="0.0" max="99999" step="0.001" id="itempriceinput" name="itemprice">
+                <label for="itemquantinput" style="color:white; left:6%; top:41%; position: absolute; font-size: 18px;">Quantity</label>
+                <input placeholder="Quantity" type="number" value="1" min="1" max="1000" step="1" id="itemquantinput" 
+                name="itemqant">
+                <textarea placeholder="Description" maxlength="2000" id="itemdescinput"></textarea>
+                <button type="button" id="newitemsubmit" class="newitemsubmit"  onclick="postItem()" > Submit </button>
+            
+            </form>
+        </div>
+    
+    
+</body>
+
+<style>
+    html * {
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+ }
+body {
+    background-image: url("./img.jpg");
+}
+
+h1 {
+    color: white;
+}
+.headerdiv {
+    background-color: rgb(36,52,71);
+    border-radius: 25px;
+    margin-top: 0px;
+    height: 250px;
+    width: 1050px;
+}
+
+.itemlistdiv {
+    width: 50%;
+    height: 100%;
+    top: 30%;
+    left: -1%;
+    position: absolute;
+}
+
+.collapsible {
+    position: relative;
+    background-color: rgb(36,52,71);
+    color: rgb(253, 253, 253);
+    cursor: pointer;
+    padding: 18px;
+    width: 50%;
+    height: 60px;
+    border-style: solid;
+    text-align: left;
+    font-size: 19px;
+    border-color: white;
+    cursor: pointer;
+
+}
+
+.itemdiv {
+    word-wrap: break-word;
+    background-color: rgb(33, 106, 148);
+    color: white;
+    display: none;
+    height: auto;
+    min-height: 60px;
+    font-size: 17px;
+    width: 50%;
+}
+.active, .collapsible:hover {
+    background-color: rgb(76, 147, 214);
+
+}
+  
+.descp {
+    word-wrap: break-word;
+    display: inline-block;
+    font-size: 16px;
+    left: 50px;
+    color: white;
+    margin-left: 3%;
+    background-color: black;
+    width: 50%;
+}
+
+
+.header {
+    color: blue;
+}
+
+#refreshbtn {
+    position: relative;
+    top: -100px;
+    font-size: 22px;
+    margin-top: 20px;
+    margin-left: 35px;
+    width: 6%;
+    height: 50px;
+    color:rgb(255, 255, 255);
+    font-weight: bold;
+    background-color: rgb(11, 77, 163);
+    border-radius: 30px;
+    border-style: hidden;
+    border-color: white;
+    cursor: pointer;
+}
+
+#refreshbtn:hover {
+    transition-duration: 500ms;
+    background-color: rgb(146, 20, 20);
+}
+#refreshbtn:active {
+    position: relative;
+    border-style: solid;
+    border-color: white;
+}
+
+#searchbar {
+    position: relative;
+    background-color: white;
+    color: rgb(36,52,71);
+    border-radius: 10px;
+    border-style: hidden;
+    left: -50px;
+    top: 0%;
+    font-size: large;
+    resize: none;
+    height: 15%;
+    width: 900px;
+}
+
+#searchform {
+    position: relative;
+    left: 50px;
+    top: 2%;
+
+}
+
+
+.newitemdiv {
+    background-color: rgb(36,52,71)  ;
+    width: 500px;
+    height: 620px;
+    position: absolute;
+    margin: 0 auto;
+    border-radius: 35px;
+    opacity: 100%;
+    left: 70%;
+    top: 5%;
+}
+
+#itemnameinput, #itempriceinput, #itemquantinput, #itemdescinput, #newitemsubmit {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 15px;
+    color: rgb(56, 59, 59);
+    display: block;
+    position: relative;
+    top: 30px;
+    margin: auto;
+    margin-bottom: 30px;
+    margin-top: 30px;
+    height: 40px;
+    width: 250px;
+    border-radius: 10px;
+    border-style: hidden;
+    text-align: center;
+    
+
+}
+
+#newitemsubmit {
+    width: 60%;
+    height: 50px;
+    color:rgb(255, 255, 255);
+    font-weight: bold;
+    background-color: rgb(11, 77, 163);
+    border-radius: 30px;
+    border-style: hidden;
+    border-color: white;
+    cursor: pointer;
+
+}
+
+
+#newitemsubmit:hover {
+    transition-duration: 900ms;
+    background-color: rgb(146, 20, 20);
+}
+#newitemsubmit:active {
+    position: relative;
+    left: 2px;
+    top: 22px;
+    border-style: solid;
+    border-color: white;
+}
+
+
+#itemdescinput {
+    height: 150px;
+    width: 300px;
+    text-align:justify;
+}
+
+
+#searchbtn {
+    position: relative;
+    top: -118px;
+    left: 970px;
+    width: 50px;
+    height: 45px;
+    border-radius: 50px;
+    border-style: hidden;
+    background-color: rgb(96, 159, 236);
+}
+
+#searchbtn:hover {
+    background-color: rgb(219, 17, 17);
+    transition-duration: 500ms;
+}
+
+
+#itemdescinput {
+    resize: none;
+}
+
+.itemdiv2 {
+    position: relative;
+    color: white;
+    margin-left: 5px;
+    margin-top: 20px;
+    border-radius: 5px;
+    position: relative;
+}
+
+.quantLabel {
+    color: white;
+}
+.quantInput {
+    margin-left: 10px;
+    width: auto;
+    max-width: 50px;
+    border-style: hidden;
+    position: relative;
+}
+
+.priceLabel {
+    margin-left: 10px;
+    color: white;
+}
+.priceInput {
+    margin-left: 10px;
+    max-width: 100px;
+    width: auto;
+    border-style: hidden;
+    position: relative;
+}
+
+.saveBtn {
+    color: white;
+    background-color: rgb(36,52,71);
+    margin-left: 10px;
+    top: 1px;
+    bottom: 20px;
+    margin-bottom: 10px;
+    width: 60px;
+    height: 30px;
+    border-radius: 30px;
+    border-style: hidden;
+}
+
+
+
+.saveBtn:hover {
+    background-color: rgb(219, 17, 17);
+    transition-duration: 500ms;
+    cursor: pointer;
+}
+
+</style>
+
+<script>
+
+    let itemsGlobal = []
+    let saveBtnsItemsMap = new Map();
+
+    function validateItem(item) {
+        if(isNaN(parseFloat(item['price']))) return false;
+        if(isNaN(parseInt(item['quantity']))) return false;
+        return true;
+    }
+    function makeCollapsible() {
+        let content = this.nextElementSibling;
+        console.log(content.style.display);
+        if (content.style.display === "block") {
+            content.style.display = "none";
+        } else {
+            content.style.display = "block";
+        }
+    }
+
+    function saveAndUpdate(button, e) {
+        updateObj = saveBtnsItemsMap.get(button);
+        updateItem = {'id' : updateObj['id'], 'price' : updateObj['price'].value, 'quantity' : updateObj['quant'].value};
+        if(validateItem(updateItem) === false) {
+            console.log("xxx");
+            alert("Price should be a decimal\nQuantity should be an integer");
+            return;
+        }
+        fetch("http://127.0.0.1:8000/inv/items/update", {mode:"no-cors", method : "POST", body : JSON.stringify(updateItem)}).then(getItems)
+        .catch((err) => console.error(err));
+    } 
+
+    function viewItems(items) {
+        itemsGlobal = [];
+        saveBtnsItemsMap.clear();
+        itemlist = document.getElementById("itemlist");
+        itemlist.innerHTML = "";
+        console.log(items);
+
+        for(let i = 0; i < items.length; i++) {
+            let name = items[i]['name'];
+            let price = items[i]['price'].toString();
+            let quant = items[i]['quantity'].toString();
+            let desc = items[i]['description'];
+            let div = document.createElement("div");
+            div.className = "itemdiv2";
+            let quantInput = document.createElement("input");
+            quantInput.setAttribute("id", "quantInput");
+            quantInput.setAttribute("type", "number");
+            quantInput.setAttribute("min", "1");
+            quantInput.setAttribute("max", "1000");
+            quantInput.setAttribute("step", "1");
+            quantInput.className = "quantInput";
+            quantInput.value = quant;
+            let quantLabel = document.createElement("label");
+            quantLabel.setAttribute("for", "quantInput");
+            quantLabel.innerHTML = "Quantity : ";
+
+            let priceInput = document.createElement("input");
+            priceInput.setAttribute("id", "priceInput");
+            priceInput.setAttribute("type", "number");
+            priceInput.setAttribute("min", "0.0");
+            priceInput.setAttribute("max", "99999");
+            priceInput.setAttribute("step", "0.001");
+            priceInput.className = "priceInput";
+            priceInput.value = price;
+            let priceLabel = document.createElement("label");
+            priceLabel.setAttribute("for", "priceInput");
+            priceLabel.innerHTML = "Price : ";
+            priceLabel.className = "priceLabel"
+
+            let saveBtn = document.createElement("button");
+            saveBtn.className = "saveBtn";  
+            saveBtn.innerHTML = "Save"
+            saveBtn.addEventListener("click", (e) => saveAndUpdate(saveBtn, e));
+            let btncollapsible = document.createElement("button");
+            btncollapsible.className = "collapsible";
+            btncollapsible.innerHTML = name;
+            btncollapsible.addEventListener("click", makeCollapsible);
+            let listi = document.createElement("li");
+            listi.appendChild(btncollapsible);
+            let pdiv = document.createElement("div");
+            pdiv.className = "itemdiv";
+            pdiv.innerHTML = desc;
+            div.appendChild(quantLabel);
+            div.appendChild(quantInput);
+            div.appendChild(priceLabel);
+            div.appendChild(priceInput);
+            div.appendChild(saveBtn);
+            pdiv.appendChild(div);
+            listi.appendChild(pdiv);
+            itemlist.appendChild(listi);
+            saveBtnsItemsMap.set(saveBtn, {'id' : items[i]['id'], 'quant' : quantInput, 'price' : priceInput});
+
+        }
+       
+    }
+    function extractItems(data) {
+        items = Array()
+        for(let i = 0; i < data.length; i++) {
+            item = {
+                "id" : data[i]['pk'],
+                "name" : data[i]['fields']['name'],
+                "price" : data[i]['fields']['price'],
+                "quantity" : data[i]['fields']['quantity'],
+                "description" : data[i]['fields']['description'],
+            }
+            items.push(item);
+            itemsGlobal.push(item);
+        }
+        return items;
+    }
+    function getItems()  {
+        fetch("http://127.0.0.1:8000/inv/items").then((response) => response.json())
+                                                .then((data) => extractItems(data))
+                                                .then((items) => viewItems(items))
+                                                .catch((err) => console.error(err));
+    }
+
+    function searchItems() {
+        let searchValue = document.getElementById("searchbar").value;
+        let namesearch = document.getElementById("namesearch");
+        let descsearch = document.getElementById("descsearch");
+        let namechecked = namesearch.checked;
+        let descchecked = descsearch.checked;
+        let param = "";
+        if(namechecked) {
+            param = "name=" + searchValue; 
+        }
+        if(descchecked) {
+            param = "desc=" + searchValue;
+        }
+        fetch("http://127.0.0.1:8000/inv/items/search?" + param).then((response) => response.json())
+                                                .then((data) => extractItems(data))
+                                                .then((items) => viewItems(items))
+                                                .catch((err) => console.error(err));
+    }
+  
+
+    function postItem() {1
+        item = {}
+        item['name'] = document.getElementById("itemnameinput").value;
+        item['price'] = document.getElementById("itempriceinput").value;
+        item['quantity'] = document.getElementById("itemquantinput").value;
+        item['description'] = document.getElementById("itemdescinput").value;
+        if(validateItem(item) === false) {
+            alert("Price should be a decimal\nQuantity should be an integer");
+            return;
+        }
+        fetch("http://127.0.0.1:8000/inv/items/new", {mode:"no-cors", method : "POST", body : JSON.stringify(item)}).then(getItems)
+        .catch((err) => console.error(err));
+    }
+
+    
+    let submitBtn = document.getElementById("newitemsubmit");
+
+
+    getItems();
+    
+ 
+    
+</script>
+</html>
