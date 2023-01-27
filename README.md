@@ -8,8 +8,8 @@ Simple Inventory Web page using Django + MySQL + HTML/CSS + Javascript
   
 # Prepare Datebase
   
-  - At first we need to head over to inventory/settings.py module and look for global variable "DATABASES" 
-  
+  - At first we need to head over to inventory/inventory/settings.py module and look for global variable "DATABASES" 
+    
     ![image](https://user-images.githubusercontent.com/67494587/214996720-484241c2-a057-40fc-bd57-e0463443b8f6.png)
     
         - You must change the 'YOUR PASSWORD' to be your password and 'YOUR USERNAME' to be your username
