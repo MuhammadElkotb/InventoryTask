@@ -78,9 +78,6 @@ WSGI_APPLICATION = 'inventory.wsgi.application'
 
 DATABASES = {
     'default': {
-        'USER' : 'kotb',
-        'PASSWORD' : '81075416',
-        'HOST' : 'localhost',
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'INVENTORY',
     }
