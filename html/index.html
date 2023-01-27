@@ -339,7 +339,7 @@ h1 {
             alert("Price should be a decimal\nQuantity should be an integer");
             return;
         }
-        fetch("http://127.0.0.1:8000/inv/items/update", {mode:"no-cors", method : "POST", body : JSON.stringify(updateItem)}).then(getItems)
+        fetch("http://127.0.0.1:8000/items/update", {mode:"no-cors", method : "POST", body : JSON.stringify(updateItem)}).then(getItems)
         .catch((err) => console.error(err));
     } 
 
@@ -424,7 +424,7 @@ h1 {
         return items;
     }
     function getItems()  {
-        fetch("http://127.0.0.1:8000/inv/items").then((response) => response.json())
+        fetch("http://127.0.0.1:8000/items").then((response) => response.json())
                                                 .then((data) => extractItems(data))
                                                 .then((items) => viewItems(items))
                                                 .catch((err) => console.error(err));
@@ -443,7 +443,7 @@ h1 {
         if(descchecked) {
             param = "desc=" + searchValue;
         }
-        fetch("http://127.0.0.1:8000/inv/items/search?" + param).then((response) => response.json())
+        fetch("http://127.0.0.1:8000/items/search?" + param).then((response) => response.json())
                                                 .then((data) => extractItems(data))
                                                 .then((items) => viewItems(items))
                                                 .catch((err) => console.error(err));
@@ -460,7 +460,7 @@ h1 {
             alert("Price should be a decimal\nQuantity should be an integer");
             return;
         }
-        fetch("http://127.0.0.1:8000/inv/items/new", {mode:"no-cors", method : "POST", body : JSON.stringify(item)}).then(getItems)
+        fetch("http://127.0.0.1:8000/items/new", {mode:"no-cors", method : "POST", body : JSON.stringify(item)}).then(getItems)
         .catch((err) => console.error(err));
     }
 
