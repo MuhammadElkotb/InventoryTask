@@ -6,7 +6,7 @@ Simple Inventory Web page using Django + MySQL + HTML/CSS + Javascript
   - Django 
   - MySQL
   
-# Prepare Datebase
+# Prepare Database
   
   - At first we need to head over to inventory/inventory/settings.py module and look for global variable "DATABASES" 
     
